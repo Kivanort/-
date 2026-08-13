@@ -1,0 +1,50 @@
+{
+  "filters": ["Все", "История", "Игры", "Технологии"],
+  "routes": [
+    {
+      "id": "route-1",
+      "title": "Маршрут №1: Клавиатуры прошлого",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+      "category": "games",
+      "duration": "~20 мин",
+      "icon": "keyboard",
+      "exhibitIds": ["ex-1", "ex-2", "ex-3"]
+    },
+    {
+      "id": "route-2",
+      "title": "Маршрут №2: Золотой век аркад",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+      "category": "games",
+      "duration": "~25 мин",
+      "icon": "gamepad",
+      "exhibitIds": ["ex-2", "ex-4", "ex-5"]
+    },
+    {
+      "id": "route-3",
+      "title": "Маршрут №3: ENIAC и мейнфреймы",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.",
+      "category": "history",
+      "duration": "~30 мин",
+      "icon": "computer",
+      "exhibitIds": ["ex-3", "ex-4", "ex-6"]
+    },
+    {
+      "id": "route-4",
+      "title": "Маршрут №4: Советский киберпанк",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.",
+      "category": "history",
+      "duration": "~35 мин",
+      "icon": "chip",
+      "exhibitIds": ["ex-5", "ex-6", "ex-1"]
+    },
+    {
+      "id": "route-5",
+      "title": "Маршрут №5: Гаджеты будущего",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis lorem ut libero malesuada feugiat. Donec sollicitudin molestie malesuada.",
+      "category": "technology",
+      "duration": "~40 мин",
+      "icon": "gadget",
+      "exhibitIds": ["ex-4", "ex-5", "ex-6"]
+    }
+  ]
+}

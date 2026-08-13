@@ -1,0 +1,184 @@
+{
+  "exhibits": [
+    {
+      "id": "ex-1",
+      "title": "Экспонат №1: Пишущая машинка Remington",
+      "formal": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Экспонат демонстрирует эволюцию механического ввода текста в официальном музейном контексте.",
+      "informal": "Lorem ipsum — а это, между прочим, прабабушка вашей клавиатуры! Нажимал клавиши — бум, буква на бумаге.",
+      "byProfession": {
+        "it": "Для IT-специалиста: QWERTY — legacy, который мы до сих пор тащим в каждый ноутбук.",
+        "engineering": "Для инженера: механика передачи усилия — от рычага до контактной группы.",
+        "humanities": "Для гуманитария: пишущая машинка изменила литературу и журналистику.",
+        "business": "Для бизнеса: первый инструмент делопроизводства at scale.",
+        "student": "Для студента: до Word был шум, чернила и мазки пальцев.",
+        "other": "Lorem ipsum — универсальный контекст для любого посетителя."
+      },
+      "byHobby": {
+        "games": "Любителям игр: представьте RPG, где каждая атака — удар по клавише.",
+        "history": "Любителям истории: 1868 год — патент, изменивший письмо.",
+        "tech": "Любителям гаджетов: тактильность, которую не вернёшь в touch-screen.",
+        "art": "Любителям дизайна: форма следует функции — классика industrial design.",
+        "science": "Любителям науки: точность механизма — физика на каждый символ.",
+        "music": "Lorem ipsum dolor sit amet — ритм набора как percussive instrument.",
+        "cinema": "Любителям кино: пишущие машинки — icon noir и detective stories."
+      },
+      "interactives": [
+        {
+          "id": "i1",
+          "label": "Узнать больше",
+          "content": "Lorem ipsum: секрет экспоната — QWERTY придумали, чтобы замедлить набор и не ломать машинку."
+        }
+      ]
+    },
+    {
+      "id": "ex-2",
+      "title": "Экспонат №2: Аркадный автомат Pac-Man",
+      "formal": "Lorem ipsum dolor sit amet. Pac-Man (1980) — культурный феномен аркадной эры, представленный в экспозиции как ключевой артефакт игровой индустрии.",
+      "informal": "Lorem ipsum — жёлтый круг, который съел pop-culture! Монетка в слот — и ты в 80-х.",
+      "byProfession": {
+        "it": "Для IT: 4 КБ RAM, 8-bit — и миллионы в кассе. Оптимизация wins.",
+        "engineering": "Для инженера: CRT, контроллер, coin mechanism — системная интеграция.",
+        "humanities": "Для гуманитария: игры как язык поколений.",
+        "business": "Для бизнеса: первый mass-market entertainment hardware.",
+        "student": "Для студента: до Fortnite был Pac-Man — и очередь в зале.",
+        "other": "Lorem ipsum — аркады объединяли всех у экрана."
+      },
+      "byHobby": {
+        "games": "Геймерам: Pac-Man — bible аркад. High score — social status.",
+        "history": "Историкам: 1980 — золотой век coin-op.",
+        "tech": "Техно-фанам: sprite rendering на пределе железа.",
+        "art": "Дизайнерам: pixel art как visual language.",
+        "science": "Lorem ipsum — pathfinding призраков = early AI?",
+        "music": "Меломанам: waka-waka — первый game soundtrack earworm.",
+        "cinema": "Киноманам: Pac-Man в «Кто подставил кролика Роджера»."
+      },
+      "interactives": [
+        {
+          "id": "i2",
+          "label": "Мини-викторина",
+          "content": "Вопрос: в каком году вышел Pac-Man? Ответ: 1980."
+        }
+      ]
+    },
+    {
+      "id": "ex-3",
+      "title": "Экспонат №3: ENIAC",
+      "formal": "Lorem ipsum dolor sit amet. ENIAC (1945) — первый универсальный электронный цифровой компьютер, занимавший целый зал.",
+      "informal": "Lorem ipsum — 27 тонн pure computing power. Прадедушка смартфона в размере комнаты!",
+      "byProfession": {
+        "it": "Для IT: programming via patch cables — respect your IDE.",
+        "engineering": "Для инженера: 17 468 vacuum tubes — reliability nightmare.",
+        "humanities": "Для гуманитария: женщины-программисты ENIAC — forgotten heroes.",
+        "business": "Для бизнеса: $500 000 project — early enterprise IT.",
+        "student": "Для студента: считал траектории снарядов — math meets war.",
+        "other": "Lorem ipsum — ENIAC changed everything."
+      },
+      "byHobby": {
+        "games": "Lorem ipsum — if ENIAC was a boss fight, HP = 27000 kg.",
+        "history": "Историкам: Aberdeen Proving Ground, 1945.",
+        "tech": "Техно-фанам: 150 kW power draw — heater included.",
+        "art": "Lorem ipsum — панели ENIAC как brutalist sculpture.",
+        "science": "Наука: ballistic tables — applied mathematics.",
+        "music": "Lorem ipsum dolor sit amet.",
+        "cinema": "Lorem ipsum — ENIAC in every retro-futurism film."
+      },
+      "interactives": [
+        {
+          "id": "i3",
+          "label": "Узнать больше",
+          "content": "Lorem ipsum: ENIAC потреблял столько энергии, сколько небольшой завод."
+        }
+      ]
+    },
+    {
+      "id": "ex-4",
+      "title": "Экспонат №4: Первый смартфон",
+      "formal": "Lorem ipsum dolor sit amet. IBM Simon (1994) — progenitor современного смартфона с сенсорным экраном и приложениями.",
+      "informal": "Lorem ipsum — телефон, который умнее некоторых людей в 94-м. Brick with superpowers.",
+      "byProfession": {
+        "it": "Для IT: mobile apps before App Store — visionary.",
+        "engineering": "Для инженера: touch + telephony + PDA = integration challenge.",
+        "humanities": "Lorem ipsum — смартфон изменил social fabric.",
+        "business": "Для бизнеса: mobile commerce starts here.",
+        "student": "Для студента: без Simon не было бы Instagram.",
+        "other": "Lorem ipsum dolor sit amet."
+      },
+      "byHobby": {
+        "games": "Геймерам: первые mobile games — Snake ancestor era.",
+        "history": "Историкам: 1994 — pre-iPhone revolution.",
+        "tech": "Gadget lovers: 1 MB RAM — and dreams.",
+        "art": "Дизайнерам: form factor evolution timeline.",
+        "science": "Lorem ipsum sit amet.",
+        "music": "Меломанам: первый MP3 player? Almost.",
+        "cinema": "Lorem ipsum."
+      },
+      "interactives": [
+        {
+          "id": "i4",
+          "label": "Узнать больше",
+          "content": "Lorem ipsum: Simon стоил $899 — luxury gadget 90-х."
+        }
+      ]
+    },
+    {
+      "id": "ex-5",
+      "title": "Экспонат №5: Советский компьютер «Агат»",
+      "formal": "Lorem ipsum dolor sit amet. «Агат» (1984) — один из первых массовых персональных компьютеров в СССР.",
+      "informal": "Lorem ipsum — Apple II's Soviet cousin. Отечественный ПК с душой и BASIC.",
+      "byProfession": {
+        "it": "Для IT: Soviet computing — parallel evolution path.",
+        "engineering": "Для инженера: clone architecture, local manufacturing.",
+        "humanities": "Для гуманитария: технология в контексте cold war.",
+        "business": "Lorem ipsum — state industry meets personal computing.",
+        "student": "Для студента: первый компьютер в школьном кабинете.",
+        "other": "Lorem ipsum dolor sit amet."
+      },
+      "byHobby": {
+        "games": "Геймерам: Soviet games on Agat — cult classics.",
+        "history": "Историкам: 1984 — computerization of USSR.",
+        "tech": "Retro tech: green phosphor monitors.",
+        "art": "Lorem ipsum — beige box aesthetics.",
+        "science": "Lorem ipsum.",
+        "music": "Lorem ipsum.",
+        "cinema": "Lorem ipsum — Agat in Soviet cinema."
+      },
+      "interactives": [
+        {
+          "id": "i5",
+          "label": "Мини-викторина",
+          "content": "Lorem ipsum: «Агат» совместим с Apple II на уровне архитектуры."
+        }
+      ]
+    },
+    {
+      "id": "ex-6",
+      "title": "Экспонат №6: VR-шлем прототип",
+      "formal": "Lorem ipsum dolor sit amet. Прототип VR-устройства демонстрирует переход к иммерсивным интерфейсам следующего поколения.",
+      "informal": "Lorem ipsum — надел шлем — забыл, где музей. Metaverse starts here, maybe.",
+      "byProfession": {
+        "it": "Для IT: WebXR, Unity, Unreal — stack VR dev.",
+        "engineering": "Для инженера: optics, IMU, latency budget.",
+        "humanities": "Lorem ipsum — VR и presence theory.",
+        "business": "Для бизнеса: training simulators ROI.",
+        "student": "Для студента: virtual labs без оборудования.",
+        "other": "Lorem ipsum dolor sit amet."
+      },
+      "byHobby": {
+        "games": "Геймерам: VR gaming — next level immersion.",
+        "history": "Lorem ipsum — VR idea since 60s.",
+        "tech": "Gadget lovers: specs race continues.",
+        "art": "Дизайнерам: spatial UI/UX frontier.",
+        "science": "Наука: molecular visualization in VR.",
+        "music": "Lorem ipsum — virtual concerts.",
+        "cinema": "Киноманам: VR storytelling experiments."
+      },
+      "interactives": [
+        {
+          "id": "i6",
+          "label": "Узнать больше",
+          "content": "Lorem ipsum: latency < 20ms — threshold for presence."
+        }
+      ]
+    }
+  ]
+}

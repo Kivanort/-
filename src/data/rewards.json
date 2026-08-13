@@ -1,0 +1,32 @@
+{
+  "rewards": [
+    {
+      "id": "sticker-museum",
+      "type": "sticker",
+      "title": "Стикер «Я музей»",
+      "emoji": "🏛️",
+      "description": "Официальный стикер Яндекс Музея за прохождение экскурсии"
+    },
+    {
+      "id": "sticker-keyboard",
+      "type": "sticker",
+      "title": "Стикер «Click-clack»",
+      "emoji": "⌨️",
+      "description": "Коллекционный стикер для любителей механики"
+    },
+    {
+      "id": "avatar-yandex",
+      "type": "avatar",
+      "title": "Аватарка посетителя",
+      "emoji": "🧑‍🚀",
+      "description": "Кастомная аватарка для аккаунта Яндекса (заглушка)"
+    },
+    {
+      "id": "badge-expert",
+      "type": "badge",
+      "title": "Знаток компьютеров",
+      "emoji": "💻",
+      "description": "Значок Яндекса за отличное знание истории IT"
+    }
+  ]
+}

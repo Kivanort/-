@@ -1,0 +1,19 @@
+{
+  "locales": [
+    {
+      "country": "Россия",
+      "countryEn": "Russia",
+      "languages": ["Русский"]
+    },
+    {
+      "country": "Казахстан",
+      "countryEn": "Kazakhstan",
+      "languages": ["Қазақ тілі", "Русский"]
+    },
+    {
+      "country": "Сербия",
+      "countryEn": "Serbia",
+      "languages": ["Српски језик", "English"]
+    }
+  ]
+}
