@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useApp } from "@/context/AppContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition } from "@/components/PageTransition";
 import { ExhibitTimer } from "@/components/ExhibitTimer";
 import { InteractiveBlock } from "@/components/InteractiveBlock";
@@ -18,6 +19,7 @@ function TourContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const routeId = searchParams.get("route") ?? "";
+  const { t } = useLanguage();
 
   const {
     profile,
@@ -45,9 +47,9 @@ function TourContent() {
   if (!route || !exhibit) {
     return (
       <div className="mx-auto max-w-lg px-4 py-20 text-center">
-        <h1 className="text-2xl font-extrabold">Маршрут не найден</h1>
+        <h1 className="text-2xl font-extrabold">{t("tour.routeNotFound")}</h1>
         <Link href="/routes" className="mt-6 inline-block">
-          <Button>Выбрать маршрут</Button>
+          <Button>{t("tour.selectRoute")}</Button>
         </Link>
       </div>
     );
@@ -68,7 +70,7 @@ function TourContent() {
           <div>
             <p className="text-sm text-yandex-gray-400">{route.title}</p>
             <p className="text-sm font-semibold">
-              Экспонат {idx + 1} / {exhibits.length}
+              {t("tour.exhibitCounter", { current: idx + 1, total: exhibits.length })}
             </p>
           </div>
           <StyleToggle
@@ -85,7 +87,7 @@ function TourContent() {
           animate={{ opacity: 1, y: 0 }}
           className="overflow-hidden rounded-2xl border border-yandex-gray-200 bg-white shadow-card"
         >
-          <ExhibitPlaceholder title="Фото экспоната (заглушка)" />
+          <ExhibitPlaceholder title={t("tour.exhibitPlaceholder")} />
           <div className="p-6 md:p-8">
             <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">{exhibit.title}</h1>
             <p className={`mt-6 whitespace-pre-line text-base leading-relaxed text-yandex-gray-600 ${textTone}`}>
@@ -115,10 +117,10 @@ function TourContent() {
               else nextExhibit();
             }}
           >
-            {isLast ? "Завершить экскурсию →" : "Следующий экспонат →"}
+            {isLast ? t("tour.finish") : t("tour.nextExhibit")}
           </Button>
           {!tour?.timerDone && (
-            <span className="text-sm text-yandex-gray-400">Дождитесь окончания таймера</span>
+            <span className="text-sm text-yandex-gray-400">{t("tour.waitTimer")}</span>
           )}
         </div>
       </div>
@@ -127,8 +129,9 @@ function TourContent() {
 }
 
 export default function TourPage() {
+  const { t } = useLanguage();
   return (
-    <Suspense fallback={<div className="py-20 text-center">Загрузка...</div>}>
+    <Suspense fallback={<div className="py-20 text-center">{t("tour.loading")}</div>}>
       <TourContent />
     </Suspense>
   );

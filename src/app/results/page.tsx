@@ -4,15 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useApp } from "@/context/AppContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition } from "@/components/PageTransition";
 import { Button } from "@/components/Button";
 import { RewardCard } from "@/components/RewardCard";
 import { calcQuizScore } from "@/lib/utils";
 import postTourQuiz from "@/data/post-tour-quiz.json";
 
-/** Результаты: квиз + награды */
 export default function ResultsPage() {
   const { profile, rewards, resetAll } = useApp();
+  const { t } = useLanguage();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [done, setDone] = useState(false);
 
@@ -30,13 +31,13 @@ export default function ResultsPage() {
             className="mb-10 rounded-2xl bg-yandex-gray-50 p-8 text-center"
           >
             <div className="text-5xl mb-4">{score >= 75 ? "🎉" : "👍"}</div>
-            <h1 className="text-3xl font-extrabold">Спасибо, {profile.name || "гость"}!</h1>
+            <h1 className="text-3xl font-extrabold">{t("results.thanks", { name: profile.name || "гость" })}</h1>
             <p className="mt-2 text-lg text-yandex-gray-500">
-              Результат квиза: <strong className="text-yandex-red">{score}%</strong>
+              {t("results.quizResult")}: <strong className="text-yandex-red">{score}%</strong>
             </p>
           </motion.div>
 
-          <h2 className="mb-6 text-center text-xl font-extrabold">Ваши награды</h2>
+          <h2 className="mb-6 text-center text-xl font-extrabold">{t("results.yourRewards")}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {rewards.map((r, i) => (
               <RewardCard key={r.id} reward={r} index={i} />
@@ -45,13 +46,13 @@ export default function ResultsPage() {
 
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link href="/">
-              <Button size="lg">Вернуться на главную →</Button>
+              <Button size="lg">{t("results.home")}</Button>
             </Link>
             <Link href="/routes">
-              <Button variant="outline" size="lg">Новый маршрут</Button>
+              <Button variant="outline" size="lg">{t("results.newRoute")}</Button>
             </Link>
             <Button variant="ghost" onClick={resetAll}>
-              Начать заново
+              {t("results.restart")}
             </Button>
           </div>
         </div>
@@ -62,11 +63,11 @@ export default function ResultsPage() {
   return (
     <PageTransition>
       <div className="mx-auto max-w-xl px-4 py-8 sm:py-10">
-        <h1 className="text-3xl font-extrabold tracking-tight">Квиз по маршруту</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">{t("results.quizTitle")}</h1>
         <p className="mt-2 mb-8 text-yandex-gray-500">
           {profile.style === "formal"
-            ? "Ответьте на вопросы по пройденной экскурсии."
-            : "Ну что, проверим, что запомнил(а)? 😄"}
+            ? t("results.quizHintFormal")
+            : t("results.quizHintInformal")}
         </p>
 
         <div className="space-y-6">
@@ -99,7 +100,7 @@ export default function ResultsPage() {
           disabled={!allAnswered}
           onClick={() => setDone(true)}
         >
-          Получить награды →
+          {t("results.getRewards")}
         </Button>
       </div>
     </PageTransition>

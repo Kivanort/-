@@ -2,10 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useApp } from "@/context/AppContext";
+import { useLanguage } from "@/context/LanguageContext";
 
-/** Toast: «НавИИгатор подбирает маршрут...» */
 export function AiToast() {
   const { showAiToast } = useApp();
+  const { t } = useLanguage();
 
   return (
     <AnimatePresence>
@@ -20,7 +21,7 @@ export function AiToast() {
             🤖
           </span>
           <p className="text-xs font-semibold text-yandex-dark sm:text-sm">
-            Нав<span className="text-yandex-red font-extrabold">ИИ</span>гатор подбирает маршрут специально для вас...
+            {t("aiToast.thinking")}
           </p>
         </motion.div>
       )}

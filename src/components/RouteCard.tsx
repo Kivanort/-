@@ -3,14 +3,15 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useApp } from "@/context/AppContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { RouteIcon } from "./Icons";
 import { Button } from "./Button";
 import type { Route } from "@/types";
 
-/** Карточка маршрута-заглушки */
 export function RouteCard({ route }: { route: Route }) {
   const router = useRouter();
   const { setShowAiToast, setPendingRouteId, startTour } = useApp();
+  const { t } = useLanguage();
 
   const handleStart = () => {
     setPendingRouteId(route.id);
@@ -39,7 +40,7 @@ export function RouteCard({ route }: { route: Route }) {
         <h3 className="mb-2 text-xl font-extrabold tracking-tight">{route.title}</h3>
         <p className="mb-6 flex-1 text-sm leading-relaxed text-yandex-gray-500">{route.description}</p>
         <Button className="w-full" onClick={handleStart}>
-          Начать маршрут →
+          {t("card.startRoute")}
         </Button>
       </div>
     </motion.article>
