@@ -26,6 +26,7 @@ const TOUR_KEY = "navigator-v2-tour";
 const defaultProfile: UserProfile = {
   name: "",
   age: "",
+  techLevel: "",
   profession: "",
   hobbies: [],
   tourTime: "",
@@ -107,6 +108,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const isEmpty =
       !profile.name &&
       !profile.age &&
+      !profile.techLevel &&
       !profile.profession &&
       profile.hobbies.length === 0 &&
       !profile.tourTime &&
@@ -144,6 +146,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const isProfileComplete = !!(
     profile.name.trim() &&
     profile.age &&
+    profile.techLevel &&
     profile.profession &&
     profile.hobbies.length > 0 &&
     profile.tourTime &&

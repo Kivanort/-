@@ -1,99 +1,59 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  ReactNode,
-} from "react";
-import ru from "@/locales/ru.json";
-import en from "@/locales/en.json";
-import kk from "@/locales/kk.json";
-import sr from "@/locales/sr.json";
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import ru from '@/locales/ru.json';
+import en from '@/locales/en.json';
+import kk from '@/locales/kk.json';
+import sr from '@/locales/sr.json';
 
-export type Lang = "ru" | "en" | "kk" | "sr";
+export type Lang = 'ru' | 'en' | 'kk' | 'sr';
 
-const translations: Record<Lang, Record<string, unknown>> = { ru, en, kk, sr };
+const translations: Record<Lang, Record<string, string>> = { ru, en, kk, sr };
 
-const LANG_KEY = "navigator-lang";
-
-function getNestedValue(obj: unknown, path: string): string {
-  const keys = path.split(".");
-  let current: unknown = obj;
-  for (const key of keys) {
-    if (current && typeof current === "object" && key in current) {
-      current = (current as Record<string, unknown>)[key];
-    } else {
-      return path;
-    }
-  }
-  return typeof current === "string" ? current : path;
-}
-
-interface LanguageContextValue {
+interface LanguageContextType {
   lang: Lang;
-  setLang: (l: Lang) => void;
+  setLang: (lang: Lang) => void;
   t: (key: string, params?: Record<string, string | number>) => string;
 }
 
-const LanguageContext = createContext<LanguageContextValue | null>(null);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("ru");
-  const langRef = useRef<Lang>("ru");
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [lang, setLangState] = useState<Lang>('ru');
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(LANG_KEY);
-      if (saved === "ru" || saved === "en" || saved === "kk" || saved === "sr") {
-        setLangState(saved);
-        langRef.current = saved;
-      }
-    } catch {
-      /* ignore */
+    const stored = localStorage.getItem('language') as Lang;
+    if (stored && translations[stored]) {
+      setLangState(stored);
     }
   }, []);
 
-  const setLang = useCallback((l: Lang) => {
-    setLangState(l);
-    langRef.current = l;
-    try {
-      localStorage.setItem(LANG_KEY, l);
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const t = useCallback(
-    (key: string, params?: Record<string, string | number>): string => {
-      const dict = translations[langRef.current] ?? translations.ru;
-      let value = getNestedValue(dict, key);
+  const t = useMemo(() => {
+    return (key: string, params?: Record<string, string | number>): string => {
+      let text = translations[lang]?.[key] || key;
       if (params) {
-        for (const [k, v] of Object.entries(params)) {
-          value = value.replace(new RegExp(`\\{\\{${k}\\}\\}`, "g"), String(v));
-        }
+        Object.entries(params).forEach(([k, v]) => {
+          text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
+        });
       }
-      return value;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [lang]
-  );
+      return text;
+    };
+  }, [lang]);
 
-  const value = useRef<LanguageContextValue>({ lang, setLang, t });
-  value.current = { lang, setLang, t };
+  const setLang = (newLang: Lang) => {
+    setLangState(newLang);
+    localStorage.setItem('language', newLang);
+  };
 
   return (
-    <LanguageContext.Provider value={value.current}>
+    <LanguageContext.Provider value={{ lang, setLang, t }}>
       {children}
     </LanguageContext.Provider>
   );
-}
+};
 
-export function useLanguage() {
-  const ctx = useContext(LanguageContext);
-  if (!ctx) throw new Error("useLanguage must be used within LanguageProvider");
-  return ctx;
-}
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) throw new Error('useLanguage must be used within LanguageProvider');
+  return context;
+};

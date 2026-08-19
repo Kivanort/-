@@ -15,12 +15,12 @@ export function getExhibitText(exhibit: Exhibit, profile: UserProfile): string {
   const parts = [base];
 
   if (profile.profession && exhibit.byProfession[profile.profession as Profession]) {
-    parts.push(`\n\n💡 ${exhibit.byProfession[profile.profession as Profession]}`);
+    parts.push(`\n\n${exhibit.byProfession[profile.profession as Profession]}`);
   }
 
   const hobby = profile.hobbies[0] as Hobby | undefined;
   if (hobby && exhibit.byHobby[hobby]) {
-    parts.push(`\n\n🎯 ${exhibit.byHobby[hobby]}`);
+    parts.push(`\n\n${exhibit.byHobby[hobby]}`);
   }
 
   return parts.join("");
@@ -29,12 +29,12 @@ export function getExhibitText(exhibit: Exhibit, profile: UserProfile): string {
 /** Секунды на экспонат из ответа об времени экскурсии */
 export function getExhibitDurationSec(tourTime: TourDuration | ""): number {
   switch (tourTime) {
-    case "15-20":
-      return 45;
-    case "30-40":
-      return 75;
-    case "60plus":
-      return 120;
+    case "30":
+      return 30;
+    case "60":
+      return 60;
+    case "90":
+      return 90;
     default:
       return 60;
   }
@@ -63,6 +63,7 @@ export function isProfileComplete(profile: UserProfile): boolean {
   return !!(
     profile.name.trim() &&
     profile.age &&
+    profile.techLevel &&
     profile.profession &&
     profile.hobbies.length > 0 &&
     profile.tourTime &&

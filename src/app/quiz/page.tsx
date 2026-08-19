@@ -1,309 +1,275 @@
 "use client";
 
-import { useState, useCallback, memo } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { useApp } from "@/context/AppContext";
-import { useLanguage } from "@/context/LanguageContext";
-import { ProgressBar } from "@/components/ProgressBar";
-import { Button } from "@/components/Button";
-import { PageTransition } from "@/components/PageTransition";
-import type {
-  AgeRange,
-  Profession,
-  Hobby,
-  TourDuration,
-  CommunicationStyle,
-  RouteTheme,
-} from "@/types";
+import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
+import { useApp } from '@/context/AppContext';
+import type { AgeRange, TechLevel, Profession, Hobby, TourDuration, CommunicationStyle } from '@/types';
 
 const TOTAL_STEPS = 7;
 
-const Q_TITLE = "mb-4 text-xl font-extrabold tracking-tight md:text-2xl";
-const Q_HINT = "-mt-2 mb-4 text-sm text-yandex-gray-500";
-const Q_OPT =
-  "flex w-full items-center rounded-xl border-2 border-yandex-gray-200 px-4 py-3 text-left text-sm font-medium transition-all hover:border-yandex-gray-300 hover:bg-yandex-gray-50";
-const Q_OPT_ON = "border-yandex-red bg-yandex-red-light";
+const Q2_OPTIONS: { id: AgeRange; key: string }[] = [
+  { id: '18-25', key: 'quiz.q2_opt1' },
+  { id: '25-35', key: 'quiz.q2_opt2' },
+  { id: '35-45', key: 'quiz.q2_opt3' },
+  { id: '45plus', key: 'quiz.q2_opt4' },
+];
 
-const NameInput = memo(function NameInput({
-  value,
-  onChange,
-  placeholder,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-}) {
-  return (
-    <input
-      className="w-full rounded-xl border-2 border-yandex-gray-200 bg-yandex-gray-50 px-4 py-3 text-lg font-medium outline-none transition-all focus:border-yandex-red focus:bg-white focus:ring-4 focus:ring-yandex-red/10"
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  );
-});
+const Q3_OPTIONS: { id: TechLevel; key: string }[] = [
+  { id: 'none', key: 'quiz.q3_opt1' },
+  { id: 'medium', key: 'quiz.q3_opt2' },
+  { id: 'advanced', key: 'quiz.q3_opt3' },
+];
 
-function Step1Options({
-  t,
-  profile,
-  updateProfile,
-}: {
-  t: (key: string) => string;
-  profile: { age: string; profession: string; hobbies: string[]; tourTime: string; style: string; theme: string };
-  updateProfile: (patch: Record<string, unknown>) => void;
-}) {
-  return (
-    <div className="space-y-2">
-      {(
-        [
-          ["games", t("quiz.q4_1")],
-          ["history", t("quiz.q4_2")],
-          ["tech", t("quiz.q4_3")],
-          ["art", t("quiz.q4_4")],
-          ["science", t("quiz.q4_5")],
-          ["music", t("quiz.q4_6")],
-          ["cinema", t("quiz.q4_7")],
-        ] as [Hobby, string][]
-      ).map(([id, label]) => (
-        <button
-          key={id}
-          type="button"
-          onClick={() => {
-            const has = profile.hobbies.includes(id);
-            updateProfile({
-              hobbies: has
-                ? profile.hobbies.filter((h: string) => h !== id)
-                : [...profile.hobbies, id],
-            });
-          }}
-          className={`${Q_OPT} ${profile.hobbies.includes(id) ? Q_OPT_ON : ""}`}
-        >
-          {label}
-          {profile.hobbies.includes(id) && <span className="ml-auto text-yandex-red">✓</span>}
-        </button>
-      ))}
-    </div>
-  );
-}
+const Q4_OPTIONS: { id: Profession; key: string }[] = [
+  { id: 'it', key: 'quiz.q4_opt1' },
+  { id: 'design-media', key: 'quiz.q4_opt2' },
+  { id: 'education-science', key: 'quiz.q4_opt3' },
+  { id: 'business', key: 'quiz.q4_opt4' },
+  { id: 'student', key: 'quiz.q4_opt5' },
+  { id: 'other', key: 'quiz.q4_opt6' },
+];
+
+const Q5_OPTIONS: { id: Hobby; key: string }[] = [
+  { id: 'videogames', key: 'quiz.q5_opt1' },
+  { id: 'programming-robotics', key: 'quiz.q5_opt2' },
+  { id: 'photography', key: 'quiz.q5_opt3' },
+  { id: 'music', key: 'quiz.q5_opt4' },
+  { id: 'painting', key: 'quiz.q5_opt5' },
+  { id: 'travel', key: 'quiz.q5_opt6' },
+  { id: 'reading-history', key: 'quiz.q5_opt7' },
+  { id: 'none', key: 'quiz.q5_opt8' },
+];
+
+const Q6_OPTIONS: { id: TourDuration; key: string }[] = [
+  { id: '30', key: 'quiz.q6_opt1' },
+  { id: '60', key: 'quiz.q6_opt2' },
+  { id: '90', key: 'quiz.q6_opt3' },
+];
+
+const Q7_OPTIONS: { id: CommunicationStyle; key: string }[] = [
+  { id: 'formal', key: 'quiz.q7_opt1' },
+  { id: 'informal', key: 'quiz.q7_opt2' },
+];
 
 export default function QuizPage() {
-  const { profile, updateProfile, toggleHobby, isProfileComplete } = useApp();
   const { t } = useLanguage();
+  const router = useRouter();
+  const { updateProfile } = useApp();
+
   const [step, setStep] = useState(0);
-  const progress = ((step + 1) / TOTAL_STEPS) * 100;
+  const [name, setName] = useState('');
+  const [age, setAge] = useState<AgeRange | ''>('');
+  const [techLevel, setTechLevel] = useState<TechLevel | ''>('');
+  const [profession, setProfession] = useState<Profession | ''>('');
+  const [hobbies, setHobbies] = useState<Hobby[]>([]);
+  const [tourTime, setTourTime] = useState<TourDuration | ''>('');
+  const [style, setStyle] = useState<CommunicationStyle | ''>('');
 
   const canNext = (): boolean => {
     switch (step) {
-      case 0:
-        return profile.name.trim().length > 0;
-      case 1:
-        return !!profile.age;
-      case 2:
-        return !!profile.profession;
-      case 3:
-        return profile.hobbies.length > 0;
-      case 4:
-        return !!profile.tourTime;
-      case 5:
-        return !!profile.style;
-      case 6:
-        return true;
-      default:
-        return false;
+      case 0: return name.trim().length > 0;
+      case 1: return age !== '';
+      case 2: return techLevel !== '';
+      case 3: return profession !== '';
+      case 4: return hobbies.length > 0;
+      case 5: return tourTime !== '';
+      case 6: return style !== '';
+      default: return false;
     }
   };
 
-  const handleNameChange = useCallback(
-    (value: string) => {
-      updateProfile({ name: value });
-    },
-    [updateProfile]
-  );
+  const handleNext = () => {
+    if (step < TOTAL_STEPS - 1) setStep(step + 1);
+  };
 
-  const renderStepContent = () => {
-    switch (step) {
-      case 1:
-        return (
-          <>
-            <h2 className={Q_TITLE}>{t("quiz.q2Title")}</h2>
-            <OptionGroup
-              options={[
-                { id: "under18", label: t("quiz.q2_1") },
-                { id: "18-25", label: t("quiz.q2_2") },
-                { id: "26-35", label: t("quiz.q2_3") },
-                { id: "36-50", label: t("quiz.q2_4") },
-                { id: "50plus", label: t("quiz.q2_5") },
-              ]}
-              selected={profile.age}
-              onSelect={(id) => updateProfile({ age: id as AgeRange })}
-            />
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <h2 className={Q_TITLE}>{t("quiz.q3Title")}</h2>
-            <p className={Q_HINT}>{t("quiz.q3Hint")}</p>
-            <OptionGroup
-              options={[
-                { id: "it", label: t("quiz.q3_1") },
-                { id: "engineering", label: t("quiz.q3_2") },
-                { id: "humanities", label: t("quiz.q3_3") },
-                { id: "business", label: t("quiz.q3_4") },
-                { id: "student", label: t("quiz.q3_5") },
-                { id: "other", label: t("quiz.q3_6") },
-              ]}
-              selected={profile.profession}
-              onSelect={(id) => updateProfile({ profession: id as Profession })}
-            />
-          </>
-        );
-      case 3:
-        return (
-          <>
-            <h2 className={Q_TITLE}>{t("quiz.q4Title")}</h2>
-            <p className={Q_HINT}>{t("quiz.q4Hint")}</p>
-            <Step1Options
-              t={t}
-              profile={profile}
-              updateProfile={updateProfile}
-            />
-          </>
-        );
-      case 4:
-        return (
-          <>
-            <h2 className={Q_TITLE}>{t("quiz.q5Title")}</h2>
-            <OptionGroup
-              options={[
-                { id: "15-20", label: t("quiz.q5_1") },
-                { id: "30-40", label: t("quiz.q5_2") },
-                { id: "60plus", label: t("quiz.q5_3") },
-              ]}
-              selected={profile.tourTime}
-              onSelect={(id) => updateProfile({ tourTime: id as TourDuration })}
-            />
-          </>
-        );
-      case 5:
-        return (
-          <>
-            <h2 className={Q_TITLE}>{t("quiz.q6Title")}</h2>
-            <OptionGroup
-              options={[
-                { id: "formal", label: t("quiz.q6_1") },
-                { id: "informal", label: t("quiz.q6_2") },
-              ]}
-              selected={profile.style}
-              onSelect={(id) => updateProfile({ style: id as CommunicationStyle })}
-            />
-          </>
-        );
-      case 6:
-        return (
-          <>
-            <h2 className={Q_TITLE}>{t("quiz.q7Title")}</h2>
-            <p className={Q_HINT}>{t("quiz.q7Hint")}</p>
-            <OptionGroup
-              options={[
-                { id: "computers", label: t("quiz.q7_1") },
-                { id: "keyboards-games", label: t("quiz.q7_2") },
-                { id: "soviet", label: t("quiz.q7_3") },
-                { id: "modern", label: t("quiz.q7_4") },
-                { id: "random", label: t("quiz.q7_5") },
-                { id: "", label: t("quiz.q7_6") },
-              ]}
-              selected={profile.theme}
-              onSelect={(id) => updateProfile({ theme: id as RouteTheme })}
-            />
-          </>
-        );
-      default:
-        return null;
-    }
+  const handleBack = () => {
+    if (step > 0) setStep(step - 1);
+  };
+
+  const handleHobbyToggle = useCallback((hobby: Hobby) => {
+    setHobbies(prev => {
+      if (prev.includes(hobby)) return prev.filter(h => h !== hobby);
+      return [...prev, hobby];
+    });
+  }, []);
+
+  const handleSubmit = () => {
+    updateProfile({
+      name: name.trim(),
+      age: age as AgeRange,
+      techLevel: techLevel as TechLevel,
+      profession: profession as Profession,
+      hobbies: hobbies,
+      tourTime: tourTime as TourDuration,
+      style: style as CommunicationStyle,
+    });
+    router.push('/routes');
   };
 
   return (
-    <PageTransition>
-      <div className="mx-auto max-w-xl px-4 py-8 sm:py-10">
-        <h1 className="mb-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{t("quiz.title")}</h1>
-        <p className="mb-8 text-yandex-gray-500">{t("quiz.subtitle")}</p>
+    <div className="container mx-auto max-w-2xl py-8 px-4">
+      <h1 className="text-3xl font-bold mb-2">{t('quiz.title')}</h1>
+      <p className="text-gray-500 mb-6">{step + 1} / {TOTAL_STEPS}</p>
 
-        <ProgressBar value={progress} className="mb-8" />
+      <div className="bg-white rounded-lg shadow p-6">
+        {/* Step 0: Name - always mounted, visibility via CSS */}
+        <div className={step === 0 ? '' : 'hidden'}>
+          <label className="block font-medium mb-2">{t('quiz.question1')}</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border rounded px-3 py-2"
+            placeholder={t('quiz.question1')}
+          />
+        </div>
 
-        <div className="rounded-2xl border border-yandex-gray-200 bg-white p-4 shadow-card sm:p-6 md:p-8">
-          <p className="mb-4 text-sm font-medium text-yandex-gray-400">
-            {t("quiz.stepCounter", { current: step + 1, total: TOTAL_STEPS })}
-          </p>
-
-          <div
-            className={step === 0 ? "" : "hidden"}
-          >
-            <h2 className={Q_TITLE}>{t("quiz.q1Title")}</h2>
-            <NameInput
-              value={profile.name}
-              onChange={handleNameChange}
-              placeholder={t("quiz.q1Placeholder")}
-            />
-          </div>
-
-          <AnimatePresence mode="wait">
-            {step !== 0 && (
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {renderStepContent()}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            {step > 0 && (
-              <Button variant="outline" onClick={() => setStep(step - 1)}>
-                {t("quiz.back")}
-              </Button>
-            )}
-            {canNext() && step < TOTAL_STEPS - 1 && (
-              <Button onClick={() => setStep(step + 1)}>{t("quiz.next")}</Button>
-            )}
-            {(canNext() && step === TOTAL_STEPS - 1) || isProfileComplete ? (
-              <Link href="/routes">
-                <Button size="lg">{t("quiz.showRoutes")}</Button>
-              </Link>
-            ) : null}
+        {/* Step 1: Age */}
+        <div className={step === 1 ? '' : 'hidden'}>
+          <label className="block font-medium mb-3">{t('quiz.question2')}</label>
+          <div className="space-y-2">
+            {Q2_OPTIONS.map(opt => (
+              <label key={opt.id} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50">
+                <input
+                  type="radio"
+                  name="age"
+                  checked={age === opt.id}
+                  onChange={() => setAge(opt.id)}
+                  className="w-4 h-4"
+                />
+                <span>{t(opt.key)}</span>
+              </label>
+            ))}
           </div>
         </div>
-      </div>
-    </PageTransition>
-  );
-}
 
-function OptionGroup({
-  options,
-  selected,
-  onSelect,
-}: {
-  options: { id: string; label: string }[];
-  selected: string;
-  onSelect: (id: string) => void;
-}) {
-  return (
-    <div className="space-y-2">
-      {options.map((o) => (
-        <button
-          key={o.id || "skip"}
-          type="button"
-          onClick={() => onSelect(o.id)}
-          className={`${Q_OPT} ${selected === o.id ? Q_OPT_ON : ""}`}
-        >
-          {o.label}
-        </button>
-      ))}
+        {/* Step 2: Tech level */}
+        <div className={step === 2 ? '' : 'hidden'}>
+          <label className="block font-medium mb-3">{t('quiz.question3')}</label>
+          <div className="space-y-2">
+            {Q3_OPTIONS.map(opt => (
+              <label key={opt.id} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50">
+                <input
+                  type="radio"
+                  name="techLevel"
+                  checked={techLevel === opt.id}
+                  onChange={() => setTechLevel(opt.id)}
+                  className="w-4 h-4"
+                />
+                <span>{t(opt.key)}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Step 3: Profession */}
+        <div className={step === 3 ? '' : 'hidden'}>
+          <label className="block font-medium mb-3">{t('quiz.question4')}</label>
+          <div className="space-y-2">
+            {Q4_OPTIONS.map(opt => (
+              <label key={opt.id} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50">
+                <input
+                  type="radio"
+                  name="profession"
+                  checked={profession === opt.id}
+                  onChange={() => setProfession(opt.id)}
+                  className="w-4 h-4"
+                />
+                <span>{t(opt.key)}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Step 4: Hobbies - checkboxes, multi-select */}
+        <div className={step === 4 ? '' : 'hidden'}>
+          <label className="block font-medium mb-3">{t('quiz.question5')}</label>
+          <div className="space-y-2">
+            {Q5_OPTIONS.map(opt => (
+              <label key={opt.id} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50">
+                <input
+                  type="checkbox"
+                  checked={hobbies.includes(opt.id)}
+                  onChange={() => handleHobbyToggle(opt.id)}
+                  className="w-4 h-4"
+                />
+                <span>{t(opt.key)}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Step 5: Tour time */}
+        <div className={step === 5 ? '' : 'hidden'}>
+          <label className="block font-medium mb-3">{t('quiz.question6')}</label>
+          <div className="space-y-2">
+            {Q6_OPTIONS.map(opt => (
+              <label key={opt.id} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50">
+                <input
+                  type="radio"
+                  name="tourTime"
+                  checked={tourTime === opt.id}
+                  onChange={() => setTourTime(opt.id)}
+                  className="w-4 h-4"
+                />
+                <span>{t(opt.key)}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Step 6: Communication style */}
+        <div className={step === 6 ? '' : 'hidden'}>
+          <label className="block font-medium mb-3">{t('quiz.question7')}</label>
+          <div className="space-y-2">
+            {Q7_OPTIONS.map(opt => (
+              <label key={opt.id} className="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50">
+                <input
+                  type="radio"
+                  name="style"
+                  checked={style === opt.id}
+                  onChange={() => setStyle(opt.id)}
+                  className="w-4 h-4"
+                />
+                <span>{t(opt.key)}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-between mt-8">
+          <button
+            type="button"
+            onClick={handleBack}
+            disabled={step === 0}
+            className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+          >
+            {t('quiz.back')}
+          </button>
+
+          {step < TOTAL_STEPS - 1 ? (
+            <button
+              type="button"
+              onClick={handleNext}
+              disabled={!canNext()}
+              className="px-4 py-2 bg-red-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-700"
+            >
+              {t('quiz.next')}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!canNext()}
+              className="px-4 py-2 bg-red-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-700"
+            >
+              {t('quiz.submit')}
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

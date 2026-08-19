@@ -31,7 +31,7 @@ export default function ResultsPage() {
             className="mb-10 rounded-2xl bg-yandex-gray-50 p-8 text-center"
           >
             <div className="text-5xl mb-4">{score >= 75 ? "🎉" : "👍"}</div>
-            <h1 className="text-3xl font-extrabold">{t("results.thanks", { name: profile.name || "гость" })}</h1>
+            <h1 className="text-3xl font-extrabold">{t("results.thanks")}{profile.name || "гость"}!</h1>
             <p className="mt-2 text-lg text-yandex-gray-500">
               {t("results.quizResult")}: <strong className="text-yandex-red">{score}%</strong>
             </p>

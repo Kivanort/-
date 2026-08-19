@@ -2,26 +2,29 @@
 
 export type CommunicationStyle = "formal" | "informal";
 
-export type AgeRange = "under18" | "18-25" | "26-35" | "36-50" | "50plus";
+export type AgeRange = "18-25" | "25-35" | "35-45" | "45plus";
+
+export type TechLevel = "none" | "medium" | "advanced";
 
 export type Profession =
   | "it"
-  | "engineering"
-  | "humanities"
+  | "design-media"
+  | "education-science"
   | "business"
   | "student"
   | "other";
 
 export type Hobby =
-  | "games"
-  | "history"
-  | "tech"
-  | "art"
-  | "science"
+  | "videogames"
+  | "programming-robotics"
+  | "photography"
   | "music"
-  | "cinema";
+  | "painting"
+  | "travel"
+  | "reading-history"
+  | "none";
 
-export type TourDuration = "15-20" | "30-40" | "60plus";
+export type TourDuration = "30" | "60" | "90";
 
 export type RouteTheme =
   | "computers"
@@ -34,6 +37,7 @@ export type RouteTheme =
 export interface UserProfile {
   name: string;
   age: AgeRange | "";
+  techLevel: TechLevel | "";
   profession: Profession | "";
   hobbies: Hobby[];
   tourTime: TourDuration | "";
@@ -56,9 +60,7 @@ export interface Exhibit {
   title: string;
   formal: string;
   informal: string;
-  /** Варианты текста под профессию */
   byProfession: Partial<Record<Profession, string>>;
-  /** Варианты текста под хобби */
   byHobby: Partial<Record<Hobby, string>>;
   interactives: { id: string; label: string; content: string }[];
 }
