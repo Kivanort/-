@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main']  # Запускается при пуше в main
-  workflow_dispatch:    # Позволяет запустить вручную из интерфейса GitHub
+    branches: ['main']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,25 +18,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build  # Соберёт статику в папку out/
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - run: npm install
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: './out'  # Папка со статическими файлами[reference:6]
-
+          path: './out'
   deploy:
     environment:
       name: github-pages
@@ -44,6 +34,4 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
